@@ -1,7 +1,7 @@
 import pickle
 import pandas as pd
 import logging
-from mlp_retrosyn.mlp_inference import MLPModel
+from retro_star.mlp_retrosyn.mlp_inference import MLPModel
 from retro_star.alg import molstar
 
 def prepare_starting_molecules(filename):

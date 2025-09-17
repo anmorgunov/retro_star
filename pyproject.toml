@@ -13,11 +13,11 @@ dependencies = [
     "pandas",
     "tqdm",
     "networkx",
-    "graphviz"
+    "graphviz",
+    "rdkit",
+    "rdchiral>=1.1.0",
 ]
 
-[project.optional-dependencies]
-rdkit = ["rdkit"]
 
 [build-system]
 requires = ["setuptools", "wheel"]
