@@ -1,0 +1,27 @@
+[project]
+name = "retro-star"
+version = "0.1.0"
+description = "Retro* for retrosynthetic planning"
+readme = "README.md"
+requires-python = ">=3.7"
+authors = [
+    {name = "binghong", email = "binghong@gatech.edu"}
+]
+dependencies = [
+    "torch",
+    "torchvision",
+    "pandas",
+    "tqdm",
+    "networkx",
+    "graphviz",
+    "rdkit",
+    "rdchiral>=1.1.0",
+]
+
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
