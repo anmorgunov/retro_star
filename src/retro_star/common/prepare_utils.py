@@ -1,13 +1,16 @@
-import pickle
-import pandas as pd
 import logging
-from retro_star.mlp_retrosyn.mlp_inference import MLPModel
+import pickle
+
+import pandas as pd
+
 from retro_star.alg import molstar
+from retro_star.mlp_retrosyn.mlp_inference import MLPModel
+
 
 def prepare_starting_molecules(filename):
     logging.info('Loading starting molecules from %s' % filename)
 
-    if "ursa" in filename:
+    if filename[-3:] == "txt":
         with open(filename, 'r') as f:
             starting_mols = set(f.read().splitlines())
     elif filename[-3:] == 'csv':
