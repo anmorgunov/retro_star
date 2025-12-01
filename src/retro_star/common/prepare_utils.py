@@ -1,3 +1,4 @@
+import gzip
 import logging
 import pickle
 
@@ -10,13 +11,16 @@ from retro_star.mlp_retrosyn.mlp_inference import MLPModel
 def prepare_starting_molecules(filename):
     logging.info('Loading starting molecules from %s' % filename)
 
-    if filename[-3:] == "txt":
+    if filename.endswith('.txt.gz'):
+        with gzip.open(filename, 'rt') as f:
+            starting_mols = set(f.read().splitlines())
+    elif filename.endswith('.txt'):
         with open(filename, 'r') as f:
             starting_mols = set(f.read().splitlines())
-    elif filename[-3:] == 'csv':
+    elif filename.endswith('.csv'):
         starting_mols = set(list(pd.read_csv(filename)['mol']))
     else:
-        assert filename[-3:] == 'pkl'
+        assert filename.endswith('.pkl')
         with open(filename, 'rb') as f:
             starting_mols = pickle.load(f)
 
