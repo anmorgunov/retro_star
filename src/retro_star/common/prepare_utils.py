@@ -9,32 +9,42 @@ from retro_star.mlp_retrosyn.mlp_inference import MLPModel
 
 
 def prepare_starting_molecules(filename):
-    logging.info('Loading starting molecules from %s' % filename)
+    logging.info("Loading starting molecules from %s" % filename)
 
-    if filename.endswith('.txt.gz'):
-        with gzip.open(filename, 'rt') as f:
+    if filename.endswith(".txt.gz"):
+        with gzip.open(filename, "rt") as f:
             starting_mols = set(f.read().splitlines())
-    elif filename.endswith('.txt'):
-        with open(filename, 'r') as f:
+    elif filename.endswith(".txt"):
+        with open(filename, "r") as f:
             starting_mols = set(f.read().splitlines())
-    elif filename.endswith('.csv'):
-        starting_mols = set(list(pd.read_csv(filename)['mol']))
+    elif filename.endswith(".csv"):
+        starting_mols = set(list(pd.read_csv(filename)["mol"]))
     else:
-        assert filename.endswith('.pkl')
-        with open(filename, 'rb') as f:
+        assert filename.endswith(".pkl")
+        with open(filename, "rb") as f:
             starting_mols = pickle.load(f)
 
-    logging.info('%d starting molecules loaded' % len(starting_mols))
+    logging.info("%d starting molecules loaded" % len(starting_mols))
     return starting_mols
 
+
 def prepare_mlp(templates, model_dump):
-    logging.info('Templates: %s' % templates)
-    logging.info('Loading trained mlp model from %s' % model_dump)
+    logging.info("Templates: %s" % templates)
+    logging.info("Loading trained mlp model from %s" % model_dump)
     one_step = MLPModel(model_dump, templates, device=-1)
     return one_step
 
-def prepare_molstar_planner(one_step, value_fn, starting_mols, expansion_topk,
-                            iterations, viz=False, viz_dir=None):
+
+def prepare_molstar_planner(
+    one_step,
+    value_fn,
+    starting_mols,
+    expansion_topk,
+    iterations,
+    viz=False,
+    viz_dir=None,
+    max_routes=1,
+):
     expansion_handle = lambda x: one_step.run(x, topk=expansion_topk)
 
     plan_handle = lambda x, y=0: molstar(
@@ -45,6 +55,7 @@ def prepare_molstar_planner(one_step, value_fn, starting_mols, expansion_topk,
         value_fn=value_fn,
         iterations=iterations,
         viz=viz,
-        viz_dir=viz_dir
+        viz_dir=viz_dir,
+        max_routes=max_routes,
     )
     return plan_handle
